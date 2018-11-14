@@ -10,7 +10,7 @@ end
 
 -- Shared Code below here
 
-function PLAYLIB.table.buildValString(table)
+function PLAYLIB.table.tableToString(table)
 		local retval = "{"
 
 		for i=1,#table do

@@ -25,7 +25,9 @@ function PLAYLIB.doors.lockWithDoorGroup(group)
 	if not PLAYLIB.doors.getAllDoors() then return end
 	for index,ent in pairs(PLAYLIB.doors.getAllDoors()) do
 		if ent:hasDoorGroup() then
-			if table.HasValue(ent:getKeysDoorGroup(),group) then
+			print("PLAYLIB - HAS DOOR GROUP")
+			if ent:getKeysDoorGroup() == group then
+				print("PLAYLIB - HAS MATCHING DOOR GROUP")
 				ent:Fire("lock")
 			end
 		end
@@ -75,6 +77,7 @@ function PLAYLIB.doors.getAllDoors()
 			table.insert(retval,ent)
 		end
 	end
+	return retval
 end
 
 

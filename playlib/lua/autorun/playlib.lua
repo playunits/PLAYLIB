@@ -26,17 +26,7 @@ function PLAYLIB:LoadFile(path,type, serverOnly, clientOnly)
 
     
 end
-/*
-function PLAYLIB:LoadFiles()
-    --self:LoadFile("playlib/config.lua")
-    self:LoadFile("playlib/net.lua")
-    self:LoadFile("playlib/shared.lua")
-    self:LoadFile("playlib/server.lua", true, false)
-    self:LoadFile("playlib/doorlock.lua", true, false)
-    self:LoadFile("playlib/client.lua", false, true)
-    self:LoadFile("external_bases/johnny_vgui_base.lua", false, true)
-end
-*/
+
 function PLAYLIB:AutoLoadModules()
     local files,dir = file.Find("playlib/modules/*","LUA")
 
