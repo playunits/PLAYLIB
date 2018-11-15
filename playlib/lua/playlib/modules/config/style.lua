@@ -2,4 +2,5 @@ if !PLAYLIB then return end
 
 PLAYLIB.style = PLAYLIB.style or {}
 
-PLAYLIB.style.MainColor = Color(255,99,71)
+PLAYLIB.style.MainHighlightWindowColor = Color(250,128,114)
+PLAYLIB.style.MainBaseWindowColor = Color(255,250,240)
