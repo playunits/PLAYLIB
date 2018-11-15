@@ -34,10 +34,8 @@ function PLAYLIB:AutoLoadModules()
 
         local sdir = "playlib/modules/"..dir2
 
-        for index,file in pairs(file.Find(sdir.."/*","LUA")) do
+        for index,file in pairs(file.Find(sdir.."/*.lua","LUA")) do
             local lua = sdir.."/"..file
-
-            if not string.find(file,"txt") == nil then continue end 
             self:LoadFile(lua,"module")
         end
             
@@ -46,34 +44,30 @@ function PLAYLIB:AutoLoadModules()
 end
 
 function PLAYLIB:AutoLoadFunctions()
-    for index,file in pairs(file.Find("playlib/functions/*","LUA"),true) do
+    for index,file in pairs(file.Find("playlib/functions/*.lua","LUA"),true) do
         local lua = "playlib/functions/"..file
-            
-            if not string.find(file,"txt") == nil then continue end 
             self:LoadFile(lua,"function")
             
     end
 end
 
 function PLAYLIB:AutoLoadExternalBases()
-    for index,file in pairs(file.Find("playlib/ex_bases/*","LUA"),true) do
+    for index,file in pairs(file.Find("playlib/ex_bases/*.lua","LUA"),true) do
         local lua = "playlib/ex_bases/"..file
-            if not string.find(file,"txt") == nil then continue end 
             self:LoadFile(lua,"ex_base")
     end
 end
 
 function PLAYLIB:AutoLoadCore()
-    for index,file in pairs(file.Find("playlib/core/*","LUA"),true) do
+    for index,file in pairs(file.Find("playlib/core/*.lua","LUA"),true) do
         local lua = "playlib/core/"..file
-            if not string.find(file,"txt") == nil then continue end 
             self:LoadFile(lua,"core")
            
     end
 end
 
 function PLAYLIB:StartAutoLoading()
-    self:AutoLoadCore()
+    --self:AutoLoadCore()
     self:AutoLoadFunctions()
     self:AutoLoadExternalBases()
     self:AutoLoadModules()
