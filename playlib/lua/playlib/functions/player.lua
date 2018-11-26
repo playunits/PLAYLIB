@@ -12,7 +12,7 @@ end
 
 function PLAYLIB.player.imitate(ply,text)
 
-	if !IsValid(ply) or ply:IsAdmin() or text == "" then return end
+	if !IsValid(ply) or !ply:IsAdmin() or text == "" then return end
 	
 	ply:ConCommand("say "..text)
 end
