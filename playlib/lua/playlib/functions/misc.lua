@@ -31,9 +31,6 @@ function PLAYLIB.misc.chatNotify(ply,vararg)
 
     local retval = ""
 
-    PrintTable(_c)
-    PrintTable(_t)
-
     for i=1,#_c do
         if i == #_c then
             retval = retval.."Color("..tostring(_c[i].r)..","..tostring(_c[i].g)..","..tostring(_c[i].b).."),'".._t[i].."'"
@@ -41,8 +38,11 @@ function PLAYLIB.misc.chatNotify(ply,vararg)
             retval = retval.."Color("..tostring(_c[i].r)..","..tostring(_c[i].g)..","..tostring(_c[i].b).."),'".._t[i].."',"
         end
     end 
-    print(retval)
-    ply:SendLua("chat.AddText("..retval..")")
+
+    if SERVER then
+        ply:SendLua("chat.AddText("..retval..")")
+    end
+    
 end
 
 /*
@@ -57,5 +57,8 @@ Sends the Player a Notification and plays a sound.
 
 function PLAYLIB.misc.notify(ply,text,type,length,sound)
     ply:SendLua("notification.AddLegacy('"..text.."',"..type..","..length..")")
-    ply:SendLua("LocalPlayer():EmitSound(Sound('"..sound.."'))")
+    if sound then
+        ply:SendLua("LocalPlayer():EmitSound(Sound('"..sound.."'))")
+    end
+    
 end

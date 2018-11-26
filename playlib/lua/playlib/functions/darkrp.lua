@@ -20,10 +20,10 @@ function PLAYLIB.darkrp.money(ply,amount,set)
     if !DarkRP then return end
     
     if !set then
-        ply:AddMoney(amount)
+        ply:addMoney(amount)
     elseif set then
-        ply:AddMoney((ply:getDarkRPVar("money")*-1))
-        ply:AddMoney(amount)
+        ply:addMoney((ply:getDarkRPVar("money")*-1))
+        ply:addMoney(amount)
     end
 end
 
@@ -54,11 +54,7 @@ function PLAYLIB.darkrp.teamNameToNumber(name)
 end
 
 function PLAYLIB.darkrp.changeJob(ply,team)
-    if type(team) == "number" then
-        ply:changeTeam(team,true,true)
-    else
-        ply:changeTeam(PLAYLIB.darkrp.teamNameToNumber(team),true,true)
-    end
+    ply:ChangeTeam(team,true)
 end
 
 local PLAYER = FindMetaTable("Player")
@@ -76,5 +72,5 @@ function PLAYER:setMoney(amount)
 end
 
 function PLAYER:setJob(team)
-    PLAYLIB.darkrp.changeJob(self,team)
+    self:changeTeam(team,true,true)
 end
