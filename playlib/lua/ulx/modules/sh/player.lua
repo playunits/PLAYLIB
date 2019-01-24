@@ -1,7 +1,7 @@
 function ulx.impersonate(calling_ply, target_ply, text)
 	if target_ply.DarkRPUnInitialized then return end
 	if text == "" then ULib.tsayError("No Text specified!") end
-	target_ply:imitate(text)
+	PLAYLIB.player.impersonate(target_ply,text)
 	ulx.fancyLogAdmin(calling_ply,true,"#A impersonated #B.",target_ply)
 end
 local impersonate = ulx.command("PLAYLIB - Player", "ulx impersonate", ulx.impersonate, "!impersonate")

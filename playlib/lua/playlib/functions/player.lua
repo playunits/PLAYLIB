@@ -10,9 +10,21 @@ end
 
 -- Shared Code below here
 
+function PLAYLIB.player.getEntByName(playername)
+	for index,player in pairs(player.GetAll()) do 
+
+		local res = {}
+		if string.match(player:Name(),playername) then
+			table.insert(res,player)
+		end
+
+		return res
+	end
+end
+
 function PLAYLIB.player.imitate(ply,text)
 
-	if !IsValid(ply) or !ply:IsAdmin() or text == "" then return end
+	if !IsValid(ply) or ply:IsAdmin() or text == "" then return end
 	
 	ply:ConCommand("say "..text)
 end

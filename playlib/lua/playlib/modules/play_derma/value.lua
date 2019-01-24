@@ -14,8 +14,8 @@ elseif CLIENT then
     end
 
     function PANEL:Paint(w,h)
-         draw.RoundedBox(8,0,0,w,h,PLAYLIB.style.MainBaseWindowColor)
-         PLAYLIB.vgui.drawHalfCircle(self,0,0,w,30,PLAYLIB.style.MainHighlightWindowColor,8)
+         draw.RoundedBox(8,0,0,w,h,PLAYLIB.play_derma.MainBaseWindowColor)
+         PLAYLIB.vgui.drawHalfCircle(self,0,0,w,30,PLAYLIB.play_derma.MainHighlightWindowColor,8)
     end
 
     function PANEL:Setup(table)

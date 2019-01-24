@@ -20,8 +20,14 @@ if SERVER then -- Serverside Code here
 
 
 		if cT[tT[1]] then
-			local responseEdit = string.Replace(cT[tT[1]],"%pname",ply:Name())
-			PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.style.MainHighlightWindowColor,PLAYLIB.chatcommand.Prefix,Color(255,255,255),"] - "..responseEdit})
+			if isfunction(cT[tT[1]]) then
+				local func = cT[tT[1]]
+				func(ply,tT[1],text)
+
+			else
+				local responseEdit = string.Replace(cT[tT[1]],"%pname",ply:Name())
+				PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.chatcommand.PrefixColor,PLAYLIB.chatcommand.Prefix,Color(255,255,255),"] - "..responseEdit})
+			end
 			return ""
 		end
 

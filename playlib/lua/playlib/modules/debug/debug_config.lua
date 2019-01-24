@@ -2,27 +2,61 @@ if !PLAYLIB then return end
 
 PLAYLIB.debug = PLAYLIB.debug or {}
 
+--[[
+	The Key to press in order to print Details of the Eye Trace Entity into the Console.
+	Key Enumerations: https://wiki.garrysmod.com/page/Enums/KEY
+]]--
 PLAYLIB.debug.printToConsoleKey = KEY_R
 
-PLAYLIB.debug.drawingRange = 300 -- Range in Which the Entities should have their Display drawn.
+--[[
+	The Range in which to show the Panel displayed on Enitites.
+	Number is in Units.
+	For Reference: 53 Units are approximately 1 Meter.
+]]--
+PLAYLIB.debug.drawingRange = 300
 
-PLAYLIB.debug.drawDebugCrosshair = false -- Should the Debug Crosshair be drawn or not?
+--[[
+	Should a simple Crosshair be drawn?
+]]--
+PLAYLIB.debug.drawDebugCrosshair = false
 
-PLAYLIB.debug.nodraw = {"gmod_hands","physgun_beam","class C_BaseFlex", "manipulate_bone","prop_dynamic","viewmodel"} -- Every Classname that should not be drawn
+--[[
+	A Table with the Classname of Enities that should not get a Panel.
+]]--
+PLAYLIB.debug.nodraw = {
+	"gmod_hands",
+	"physgun_beam",
+	"class C_BaseFlex",
+	"manipulate_bone",
+	"prop_dynamic",
+	"viewmodel"
+}
 
-PLAYLIB.debug.InfoSpacing = { -- X and Y Spacing of the Trace Hit Entity and the Player Information, relative to the Screen Center
+--[[
+	The Spacing of the Information relative to the Screen Center.
+	These Values are inversed for the Trace Hit Entity Information
+]]--
+PLAYLIB.debug.InfoSpacing = {
 	["X"] = 200,
 	["Y"] = -100
 }
-/*
-Adding 'Information Functions' that should be used to display Debug Information.
 
-@UsableParams tent The Target Entity that is choosen to Draw
-@UsableParams lent The LocalPlayer
+PLAYLIB.debug.Prefix = "PLAYLIB"
+PLAYLIB.debug.PrefixColor = Color(250,128,114)
+PLAYLIB.debug.PrintToConsoleMessage = "Die Entity Informationen wurden in deine Konsole geschrieben!"
 
-@Params A function that needs to return a String
-@Params A Table with all Categories it should be drawn for. Available Categories: "Player","Ent"
-*/
+--[[
+	Adding Informations to the Entity Panels:
+
+	PLAYLIB.debug.addDebugFunction(func,Categories)
+		func = Parameters:
+					1. Target Entity
+					2. Local Entity
+		Categories = Table
+			Table with the Categories that the Function should draw on.
+				Categories = "Player","Ent"
+	The function should return some Kind of string in order to display something.
+]]--
 PLAYLIB.debug.addDebugFunction(function(tent,lent) return "Name: "..tent:Name().." | UserID: "..tent:UserID() end,{"Player"})
 PLAYLIB.debug.addDebugFunction(function(tent,lent) return "SteamID: "..tent:SteamID().." | SteamID64: "..tent:SteamID64() end,{"Player"})
 PLAYLIB.debug.addDebugFunction(function(tent,lent) return "Health: "..tent:Health().." | Armor: "..tent:Armor() end,{"Player"})
@@ -33,7 +67,7 @@ PLAYLIB.debug.addDebugFunction(function(tent,lent) return 'Class: '..tent:GetCla
 PLAYLIB.debug.addDebugFunction(function(tent,lent) return "Money: "..tent:getDarkRPVar('money') end,{"Player"})
 PLAYLIB.debug.addDebugFunction(function(tent,lent) return "Team: "..team.GetName(tent:Team()) end,{"Player"})
 --PLAYLIB.debug.addDebugFunction(function(tent,lent) return "Rank: "..tent:GetJobRank().." | Rank Name: "..tent:GetJobRankName() end,{"Player"})
-PLAYLIB.debug.addDebugFunction(function(tent,lent) 
+PLAYLIB.debug.addDebugFunction(function(tent,lent)
 	if IsValid(tent:GetActiveWeapon()) then
 		return "Weapon Name: "..tent:GetActiveWeapon():GetPrintName().." | Weapon Class: "..tent:GetActiveWeapon():GetClass()
 	else

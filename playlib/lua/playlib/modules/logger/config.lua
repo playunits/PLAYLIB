@@ -11,7 +11,7 @@ PLAYLIB.logger.Prefix = "PLAYLIB"
 PLAYLIB.logger.PrefixColor = Color(250,128,114)
 
 if SERVER then -- Serverside Code here
-	PLAYLIB.logger.newLogFileAfter = 60 -- In Seconds
+	PLAYLIB.logger.newLogFileAfter = 3600*6 -- In Seconds
 	PLAYLIB.logger.debug = false
     
 elseif CLIENT then -- Clientside Code here

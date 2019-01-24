@@ -274,7 +274,8 @@ hook.Add("PlayerButtonDown","PLAYLIB::DebugPrint",function(ply,btn)
 						print(func(ent,LocalPlayer()))
 					end
 					print("*****    ENDE    *****")
-				end				
+				end
+				chat.AddText(Color(255,255,255),"[",PLAYLIB.debug.PrefixColor,PLAYLIB.debug.Prefix,Color(255,255,255),"] - "..PLAYLIB.debug.PrintToConsoleMessage)				
 			end
 		end
 	end

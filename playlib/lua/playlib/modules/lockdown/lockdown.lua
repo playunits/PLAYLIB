@@ -86,15 +86,14 @@ elseif CLIENT then -- Clientside Code here
 		end
 
 		PLAYLIB.lockdown.panel = p
-
+		chat.AddText(Color(255,255,255),"[",PLAYLIB.lockdown.PrefixColor,PLAYLIB.lockdown.prefix,Color(255,255,255),"] - "..PLAYLIB.lockdown.BeginChatText)
 		surface.PlaySound( PLAYLIB.lockdown.BeginSound )
-		LocalPlayer():ChatPrint(PLAYLIB.lockdown.BeginChatText)
 	end
 	
 	function PLAYLIB.lockdown.removeLockdownPanel()
 		if IsValid(PLAYLIB.lockdown.panel) then PLAYLIB.lockdown.panel:Remove() end
 		PLAYLIB.lockdown.panel = nil
-		LocalPlayer():ChatPrint(PLAYLIB.lockdown.EndChatText)
+		chat.AddText(Color(255,255,255),"[",PLAYLIB.lockdown.PrefixColor,PLAYLIB.lockdown.prefix,Color(255,255,255),"] - "..PLAYLIB.lockdown.EndChatText)
 		RunConsoleCommand("stopsound")
 	end
 

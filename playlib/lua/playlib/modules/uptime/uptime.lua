@@ -2,28 +2,28 @@ if !PLAYLIB then return end
 
 PLAYLIB.uptime = PLAYLIB.uptime or {}
 
-PLAYLIB.uptime.onlineTime = 0 
+PLAYLIB.uptime.onlineTime = 0
 
 if SERVER then
 
-	
+
 
 	hook.Add("Initialize","PLAYLIB::StartOnlineTimer",function()
-		PLAYLIB.uptime.onlineTime = 0 
-		timer.Create("PLAYLIB::ServerOnlineTimer",1,0,function() 
+		PLAYLIB.uptime.onlineTime = 0
+		timer.Create("PLAYLIB::ServerOnlineTimer",1,0,function()
 			PLAYLIB.uptime.incrementOnlineTime()
 		end)
 	end)
 
-	hook.Add("ShutDown","PLAYLIB::RemoveOnlineTimer",function() 
+	hook.Add("ShutDown","PLAYLIB::RemoveOnlineTimer",function()
 		timer.Remove("PLAYLIB::ServerOnlineTimer")
 		timer.Remove("PLAYLIB::ServerOnlineMessageTimer")
-		PLAYLIB.uptime.onlineTime = 0 
+		PLAYLIB.uptime.onlineTime = 0
 	end)
 
 	function PLAYLIB.uptime.startMessageTimer()
-		timer.Create("PLAYLIB::ServerOnlineMessageTimer",PLAYLIB.uptime.messageInterval,0,function() 
-			PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.style.MainHighlightWindowColor,PLAYLIB.chatcommand.Prefix,Color(255,255,255),"] - "..string.Replace(PLAYLIB.uptime.Message,"%time",PLAYLIB.uptime.getTime())})
+		timer.Create("PLAYLIB::ServerOnlineMessageTimer",PLAYLIB.uptime.messageInterval,0,function()
+			PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.uptime.PrefixColor,PLAYLIB.uptime.Prefix,Color(255,255,255),"] - "..string.Replace(PLAYLIB.uptime.Message,"%time",PLAYLIB.uptime.getTime())})
 		end)
 	end
 
@@ -88,7 +88,7 @@ if SERVER then
 
 			return s.." "..ss..""
 		end
-		
+
 	end
 
 
@@ -96,10 +96,3 @@ if SERVER then
 elseif CLIENT then
 
 end
-	
-			
-			
-	
-
-
-

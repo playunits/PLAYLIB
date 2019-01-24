@@ -10,6 +10,7 @@ if SERVER then -- Serverside Code here
 
 	function PLAYLIB.logger.addLogger(identifier)
 		local path = "playlib/logger/"..identifier
+		PLAYLIB.logger.logs[identifier] = {}
 		PLAYLIB.logger.logs[identifier].path = path
 		PLAYLIB.logger.logs[identifier].lastLogFileTime = 0
 		PLAYLIB.logger.logs[identifier].actualLog = nil
@@ -19,37 +20,37 @@ if SERVER then -- Serverside Code here
 		end
 
 		if PLAYLIB.logger.debug then
-			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created Logger with identifier "..identifier.."!")
+			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created Logger with identifier "..identifier.."!\n")
 		end
 	end
 
 	function PLAYLIB.logger.log(identifier,text)
 		if not PLAYLIB.logger.logs[identifier] then
 			if PLAYLIB.logger.debug then
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Tried to log with non existing Logger: "..identifier.."!")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Tried to log with non existing Logger: "..identifier.."!\n")
 			end
 		end
-		local time = os.date( "%H:%M:%S - %d/%m/%Y" , os.time() )
-		local newfile = PLAYLIB.logger.logs[identifier].path..time..".txt"
+		local time = os.date( "%H.%M.%S - %d.%m.%Y" , os.time() )
+		local newfile = PLAYLIB.logger.logs[identifier].path.."/"..time..".txt"
 		if PLAYLIB.logger.logs[identifier].actualLog == nil then
 			file.Write(newfile,"")
 			PLAYLIB.logger.logs[identifier].actualLog = newfile
 			PLAYLIB.logger.logs[identifier].lastLogFileTime = os.time()
 			if PLAYLIB.logger.debug then
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created new Logfile for Identifier: "..identifier.." cause there existed none!")
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Logfile: "..PLAYLIB.logger.logs[identifier].actualLog.."!")
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Last Log Time: "..PLAYLIB.logger.logs[identifier].lastLogFileTime.."("..os.date( "%H:%M:%S - %d/%m/%Y" , PLAYLIB.logger.logs[identifier].lastLogFileTime )..")!")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created new Logfile for Identifier: "..identifier.." cause there existed none!\n")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Logfile: "..PLAYLIB.logger.logs[identifier].actualLog.."!\n")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Last Log Time: "..PLAYLIB.logger.logs[identifier].lastLogFileTime.."("..os.date( "%H:%M:%S - %d/%m/%Y" , PLAYLIB.logger.logs[identifier].lastLogFileTime )..")!\n")
 			end
 
-		elseif os.time>PLAYLIB.logger.logs[identifier].lastLogFileTime+PLAYLIB.logger.newLogFileAfter then
+		elseif os.time()>PLAYLIB.logger.logs[identifier].lastLogFileTime+PLAYLIB.logger.newLogFileAfter then
 			local lasttime = PLAYLIB.logger.logs[identifier].lastLogFileTime
 			file.Write(newfile,"")
 			PLAYLIB.logger.logs[identifier].actualLog = newfile
 			PLAYLIB.logger.logs[identifier].lastLogFileTime = os.time()
 			if PLAYLIB.logger.debug then
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created new Logfile for Identifier: "..identifier.." cause the last one was created "..os.time()-lasttime.." Seconds ago!")
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Logfile: "..PLAYLIB.logger.logs[identifier].actualLog.."!")
-				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Last Log Time: "..PLAYLIB.logger.logs[identifier].lastLogFileTime.."("..os.date( "%H:%M:%S - %d/%m/%Y" , PLAYLIB.logger.logs[identifier].lastLogFileTime )..")!")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Created new Logfile for Identifier: "..identifier.." cause the last one was created "..os.time()-lasttime.." Seconds ago!\n")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Logfile: "..PLAYLIB.logger.logs[identifier].actualLog.."!\n")
+				MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] New Last Log Time: "..PLAYLIB.logger.logs[identifier].lastLogFileTime.."("..os.date( "%H:%M:%S - %d/%m/%Y" , PLAYLIB.logger.logs[identifier].lastLogFileTime )..")!\n")
 			end
 
 		end
@@ -57,8 +58,8 @@ if SERVER then -- Serverside Code here
 		file.Append(PLAYLIB.logger.logs[identifier].actualLog,"["..os.date( "%H:%M:%S - %d/%m/%Y" , os.time() ).."] - "..text.."\n")
 
 		if PLAYLIB.logger.debug then
-			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Added Text to Logfile "..PLAYLIB.logger.logs[identifier].actualLog.."!")
-			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Text: "..text.."!")
+			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Added Text to Logfile "..PLAYLIB.logger.logs[identifier].actualLog.."!\n")
+			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [LOGGER] Text: "..text.."!\n")
 		end
 	end
 

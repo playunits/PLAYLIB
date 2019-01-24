@@ -53,6 +53,10 @@ function PLAYLIB.darkrp.teamNameToNumber(name)
     return nil
 end
 
+function PLAYLIB.darkrp.numberToCommand(number)
+    return RPExtraTeams[number].command
+end
+
 function PLAYLIB.darkrp.changeJob(ply,team)
     ply:ChangeTeam(team,true)
 end
