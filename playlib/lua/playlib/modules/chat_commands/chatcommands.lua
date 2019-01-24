@@ -13,7 +13,7 @@ if SERVER then -- Serverside Code here
 		PLAYLIB.chatcommand.commands[name] = response
 	end
 
-	hook.Add("PlayerSay","PLAYLIB::ChatCommandCheck",function(ply,text,public) 
+	hook.Add("PlayerSay","PLAYLIB::ChatCommandCheck",function(ply,text,public)
 		local cT = PLAYLIB.chatcommand.commands
 
 		local tT = string.Split(text,' ')
@@ -35,4 +35,3 @@ if SERVER then -- Serverside Code here
 elseif CLIENT then -- Clientside Code here
 
 end
-

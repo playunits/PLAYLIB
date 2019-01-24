@@ -3,29 +3,56 @@ if !PLAYLIB then return end
 PLAYLIB.darkrp = PLAYLIB.darkrp or {}
 
 if SERVER then -- Serverside Code here
-    
+  function PLAYLIB.darkrp.setname(ply,name)
+      if !DarkRP then return end
+
+      ply:setDarkRPVar("rpname",name)
+  end
+
+  function PLAYLIB.darkrp.money(ply,amount,set)
+      if !DarkRP then return end
+
+      if !set then
+          ply:addMoney(amount)
+      elseif set then
+          ply:addMoney((ply:getDarkRPVar("money")*-1))
+          ply:addMoney(amount)
+      end
+  end
+
+  function PLAYLIB.darkrp.changeJob(ply,team)
+      ply:changeTeam(team,true)
+  end
+
+
+  local PLAYER = FindMetaTable("Player")
+
+  function PLAYER:pSetName(name)
+      PLAYLIB.darkrp.setname(self,name)
+  end
+
+  function PLAYER:pAddMoney(amount)
+      PLAYLIB.darkrp.money(self,amount,false)
+  end
+
+  function PLAYER:pSetMoney(amount)
+      PLAYLIB.darkrp.money(self,amount,true)
+  end
+
+  function PLAYER:pSetJob(team)
+      self:changeTeam(team,true,true)
+  end
+
+
 elseif CLIENT then -- Clientside Code here
-    
+
 end
 
 -- Shared Code below here
 
-function PLAYLIB.darkrp.setname(ply,name)
-    if !DarkRP then return end
-    
-    ply:setDarkRPVar("rpname",name)
-end
 
-function PLAYLIB.darkrp.money(ply,amount,set)
-    if !DarkRP then return end
-    
-    if !set then
-        ply:addMoney(amount)
-    elseif set then
-        ply:addMoney((ply:getDarkRPVar("money")*-1))
-        ply:addMoney(amount)
-    end
-end
+
+
 
 function PLAYLIB.darkrp.getJobsFromCategory(category)
     if !DarkRP then return end
@@ -55,26 +82,4 @@ end
 
 function PLAYLIB.darkrp.numberToCommand(number)
     return RPExtraTeams[number].command
-end
-
-function PLAYLIB.darkrp.changeJob(ply,team)
-    ply:ChangeTeam(team,true)
-end
-
-local PLAYER = FindMetaTable("Player")
-
-function PLAYER:setName(name)
-    PLAYLIB.darkrp.setname(self,name)
-end
-
-function PLAYER:addMoney(amount)
-    PLAYLIB.darkrp.money(self,amount,false)
-end
-
-function PLAYER:setMoney(amount)
-    PLAYLIB.darkrp.money(self,amount,true)
-end
-
-function PLAYER:setJob(team)
-    self:changeTeam(team,true,true)
 end

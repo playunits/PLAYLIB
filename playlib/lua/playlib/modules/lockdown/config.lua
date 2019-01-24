@@ -15,7 +15,7 @@ PLAYLIB.lockdown.prefix = "Emergency"
 PLAYLIB.lockdown.PanelTitle = "EMERGENCY!"
 PLAYLIB.lockdown.PanelText = {
 	"This Base is currently under Attackt! Go to your Positions and return Fire!",
-} 
+}
 PLAYLIB.lockdown.BeginChatText = "This Base is currently under Attack!"
 PLAYLIB.lockdown.EndChatText = "The Base has been Secured"
 PLAYLIB.lockdown.NotAllowed = "You are not allowed to use this Command!"
@@ -66,6 +66,7 @@ PLAYLIB.lockdown.AllowedRanks = {
 PLAYLIB.lockdown.StrictHandling = false
 
 if SERVER then -- Serverside Code here
+
 
 elseif CLIENT then -- Clientside Code here
 

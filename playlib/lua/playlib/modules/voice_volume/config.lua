@@ -5,7 +5,7 @@ PLAYLIB.voice_volume = PLAYLIB.voice_volume or {}
 
 local meter = 53 --ca. 53 Units = 1 Meter
 
-PLAYLIB.voice_volume.incrementKey = KEY_L
+PLAYLIB.voice_volume.incrementKey = KEY_G
 PLAYLIB.voice_volume.buttonPressDelay = 3
 
 PLAYLIB.voice_volume.Prefix = "PLAYLIB"
@@ -45,7 +45,3 @@ elseif CLIENT then
 		["Y"] = ScrH() - (ScrH()/45),
 	}
 end
-
-
-
-

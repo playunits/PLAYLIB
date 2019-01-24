@@ -6,37 +6,8 @@ PLAYLIB.uptime.onlineTime = 0
 
 if SERVER then
 
-
-
-	hook.Add("Initialize","PLAYLIB::StartOnlineTimer",function()
-		PLAYLIB.uptime.onlineTime = 0
-		timer.Create("PLAYLIB::ServerOnlineTimer",1,0,function()
-			PLAYLIB.uptime.incrementOnlineTime()
-		end)
-	end)
-
-	hook.Add("ShutDown","PLAYLIB::RemoveOnlineTimer",function()
-		timer.Remove("PLAYLIB::ServerOnlineTimer")
-		timer.Remove("PLAYLIB::ServerOnlineMessageTimer")
-		PLAYLIB.uptime.onlineTime = 0
-	end)
-
-	function PLAYLIB.uptime.startMessageTimer()
-		timer.Create("PLAYLIB::ServerOnlineMessageTimer",PLAYLIB.uptime.messageInterval,0,function()
-			PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.uptime.PrefixColor,PLAYLIB.uptime.Prefix,Color(255,255,255),"] - "..string.Replace(PLAYLIB.uptime.Message,"%time",PLAYLIB.uptime.getTime())})
-		end)
-	end
-
-	function PLAYLIB.uptime.incrementOnlineTime()
-		PLAYLIB.uptime.onlineTime = PLAYLIB.uptime.onlineTime + 1
-
-		if PLAYLIB.uptime.onlineTime >= PLAYLIB.uptime.timeBeforeMessage then
-			PLAYLIB.uptime.startMessageTimer()
-		end
-	end
-
 	function PLAYLIB.uptime.getTime()
-		local time = PLAYLIB.uptime.onlineTime
+		local time = math.floor(CurTime())
 		if time > 3599 then
 			local hh = "Stunden"
 			local ss = "Sekunden"
