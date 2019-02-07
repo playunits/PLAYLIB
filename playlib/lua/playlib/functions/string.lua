@@ -21,3 +21,15 @@ function PLAYLIB.string.contains(stringToSearchIn,stringToFind)
       return true
   end
 end
+
+function PLAYLIB.string.multiReplace(replaceString,tbl)
+	local res = replaceString
+	for i=1,table.Count(tbl) do
+		if i%2 != 1 then continue end
+		res = string.Replace(res,tbl[i],tbl[i+1])
+	end
+
+	return res
+end
+
+string.multiReplace = PLAYLIB.string.multiReplace
