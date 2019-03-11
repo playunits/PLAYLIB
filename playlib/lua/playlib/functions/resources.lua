@@ -21,23 +21,6 @@ if SERVER then -- Serverside Code here
       local files,dirs = file.Find("materials/wos_custom_icons/marodeur/*.png","GAME")
       PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/marodeur",files)
 
-      local files,dirs = file.Find("materials/wos_custom_icons/hexer/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/hexer",files)
-
-      local files,dirs = file.Find("materials/wos_custom_icons/juggernaut/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/juggernaut",files)
-
-      local files,dirs = file.Find("materials/wos_custom_icons/attentaeter/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/attentaeter",files)
-
-      local files,dirs = file.Find("materials/wos_custom_icons/soeldner/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/soeldner",files)
-
-      local files,dirs = file.Find("materials/wos_custom_icons/powertech/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/powertech",files)
-      local files,dirs = file.Find("materials/wos_custom_icons/trooper/*.png","GAME")
-      PLAYLIB.resources.downloadAllFromTable("materials/wos_custom_icons/trooper",files)
-
 
 
 

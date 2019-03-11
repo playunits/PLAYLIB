@@ -156,4 +156,119 @@ elseif CLIENT then -- Clientside Code here
             surface.DrawPoly(verts)
     end
 
+    PLAYLIB.vgui.deg2rad = 0.0174532925
+
+    function PLAYLIB.vgui.drawArc(center_x,center_y,radius,thickness,start_ang,end_ang,color)
+      if not IsColor(color) then color = Color(255,255,255,255) end
+
+      draw.NoTexture()
+    	surface.SetDrawColor( color )
+
+      aa = (radius/100);
+      start_ang = math.Clamp( start_ang or 0, 0, 360 );
+      end_ang = math.Clamp( end_ang or 360, 0, 360 );
+
+      if end_ang < start_ang then
+          local temp = end_ang;
+          end_ang = start_ang;
+          start_ang = temp;
+      end
+
+      for i=start_ang, end_ang, aa do
+          local _i = i * PLAYLIB.vgui.deg2rad;
+          surface.DrawTexturedRectRotated(math.cos( _i ) * (radius - thickness) + center_x,math.sin( _i ) * (radius - thickness) + center_y, thickness, aa*(radius/50), -i );
+      end
+
+    end
+
+
+end
+
+/*
+ARGS
+*/
+
+function PLAYLIB.vgui.colorInterpolation(steps,startColor,endColor,curStep,tbl)
+  if curStep == steps then
+    table.insert(tbl,endColor)
+  --  print("[StartColor] = R: "..startColor.r.." G: "..startColor.g.." B: "..startColor.b.." [EndColor] = "..endColor.r.." G: "..endColor.g.." B: "..endColor.b.." [NewColor] = R: "..endColor.r.." G: "..endColor.g.." B: "..endColor.b.." [CurStep] "..steps.." [LERPVAL] 1")
+    return
+  end
+  local lerp_val = curStep/steps
+  local r = Lerp(lerp_val,startColor.r,endColor.r)
+  local g = Lerp(lerp_val,startColor.g,endColor.g)
+  local b = Lerp(lerp_val,startColor.b,endColor.b)
+  --print("[StartColor] = R: "..startColor.r.." G: "..startColor.g.." B: "..startColor.b.." [EndColor] = "..endColor.r.." G: "..endColor.g.." B: "..endColor.b.." [NewColor] = R: "..r.." G: "..g.." B: "..b.." [CurStep] "..curStep.."[STEPS] "..steps.." [LERPVAL] "..lerp_val)
+  table.insert(tbl,Color(r,g,b,255))
+  PLAYLIB.vgui.colorInterpolation(steps,startColor,endColor,curStep+1,tbl)
+end
+
+function PLAYLIB.vgui.createColorInterpolationTable(steps,startColor,endColor)
+  local retval = {}
+  PLAYLIB.vgui.colorInterpolation(steps,startColor,endColor,1,retval)
+  return retval
+end
+
+
+
+
+function PLAYLIB.vgui.colorInterpolationAnimation(changeValue,steps,time,startColor,endColor)
+  local interp_tbl = PLAYLIB.vgui.createColorInterpolationTable(steps,startColor,endColor)
+
+  local function recursion(index)
+
+    --print("[COLOR] Recursion Called for "..index.." times")
+    if index == steps+1 then return end
+    changeValue.r = interp_tbl[index].r
+    changeValue.g = interp_tbl[index].g
+    changeValue.b = interp_tbl[index].b
+    timer.Simple(time/steps,function()
+      recursion(index+1)
+    end)
+
+  end
+
+  recursion(1)
+end
+
+function PLAYLIB.vgui.coordinateInterpolation(steps,startVal,endVal,curStep,tbl)
+  if curStep == steps then
+    table.insert(tbl,endVal)
+    return
+  end
+  local lerp_val = curStep/steps
+  local val = Lerp(lerp_val,startVal,endVal)
+  print("[STARTVAL] = "..startVal.." [ENDVAL] = "..endVal.." [NEWVAL] = "..val.." [CURSTEP] = "..curStep.." [STEPS] = "..steps.." [LERPVAL] = "..lerp_val)
+  table.insert(tbl,val)
+  PLAYLIB.vgui.coordinateInterpolation(steps,startVal,endVal,curStep+1,tbl)
+end
+
+function PLAYLIB.vgui.createCoordinateInterpolationTable(steps,startVal,endVal)
+  local retval = {}
+  PLAYLIB.vgui.coordinateInterpolation(steps,startVal,endVal,1,retval)
+  return retval
+end
+
+/*
+    changeValue wird nicht erhöht, Viel Glück Zukunfts Juri. BTW, ist das Richtige Script und ist geladen...
+*/
+function PLAYLIB.vgui.coordinateInterpolationAnimation(val,steps,time,startVal,endVal)
+  local interp_tbl = PLAYLIB.vgui.createCoordinateInterpolationTable(steps,startVal,endVal) // Geting a Dynamic Table with the Interpolation Values |Debug: Values created from the Table are Correct
+
+  local function recursion(index)  //Local Recursion Function to execute the "Animation"
+    print("[COORDINATE] Recursion Called for "..index.." times")
+    if index == steps+1 then return end //Recursion Anchor ... Dont know the exact English Term
+    val = interp_tbl[index] // Set the external Value to the Value of the Interpolation Table
+    print(interp_tbl[index]) // Debug: See if the Table has a Value. Unfortunately it does
+    print("[COORIDNATE] VAL: "..val) //Debug: See if the Value gets one... Yeah it gets the Correct Values from the Table
+    timer.Simple(time/steps,function() // Starting the next Recursion after the defined Timeframe: time/steps
+      recursion(index+1) // Calling Recursion with the next index
+    end)
+  end
+  recursion(1) // Starting the Initial Recursion. Making an "Animation" with less then 1 Step appears to be very useless
+end
+
+function PLAYLIB.vgui.Interpolation(fraction,start,stop)
+  local val = start-stop
+  return start+(fraction*val)
 end

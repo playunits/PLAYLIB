@@ -3,7 +3,7 @@ if !PLAYLIB then return end
 PLAYLIB.player = PLAYLIB.player or {}
 
 if SERVER then -- Serverside Code here
-    function PLAYLIB.player.imitate(ply,text)
+  function PLAYLIB.player.imitate(ply,text)
 
   	if !IsValid(ply) or text == "" then return end
 

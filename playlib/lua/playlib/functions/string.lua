@@ -13,7 +13,7 @@ function PLAYLIB.string.starts(str,char)
 end
 
 function PLAYLIB.string.contains(stringToSearchIn,stringToFind)
-  local start,stop = string.find(stringToSearchIn:lower(),stringToFind:lower())
+  local start,stop = string.find(string.lower(stringToSearchIn),string.lower(stringToFind))
 
   if not start and not stop then
       return false

@@ -1,7 +1,7 @@
 if !PLAYLIB then return end
 
 if SERVER then
-    
+
 elseif CLIENT then
 
     local PANEL = {}
@@ -27,7 +27,7 @@ elseif CLIENT then
         main.val = ""
 
         if table.blur then
-            
+
             local scr = vgui.Create("DPanel")
             scr:SetSize(ScrW(),ScrH())
             scr:MakePopup()
@@ -69,7 +69,7 @@ elseif CLIENT then
         s:SetPos(10,100)
         s:SetSize(135,30)
         s:SetText(table.sText)
-        s.DoClick = function() 
+        s.DoClick = function()
             main.sPressed = true
             main.sFunc(s,text:GetValue())
             if table.blur then
@@ -83,7 +83,7 @@ elseif CLIENT then
        a:SetPos(main:GetWide()-10-135,100)
        a:SetSize(135,30)
        a:SetText(table.aText)
-       a.DoClick = function() 
+       a.DoClick = function()
         main.nPressed = true
             main.aFunc(a)
             if table.blur then

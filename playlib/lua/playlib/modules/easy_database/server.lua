@@ -3,8 +3,18 @@ if !PLAYLIB then return end
 PLAYLIB.easy_database = PLAYLIB.easy_database or {}
 
 if SERVER then
+
+
   util.AddNetworkString("PLAYLIB.easy_database:RequestData")
   util.AddNetworkString("PLAYLIB.easy_database:SendData")
+
+  timer.Simple(2,function()
+    PLAYLIB.chatcommand.addCommand("!easy_database",function(ply,cmd,msg)
+      if ply:IsAdmin() or ply:IsSuperAdmin() then
+        ply:SendLua("PLAYLIB.easy_database:OpenUI()")
+      end
+     end)
+  end)
 
   net.Receive("PLAYLIB.easy_database:RequestData",function(len,ply)
     local name = net.ReadString()

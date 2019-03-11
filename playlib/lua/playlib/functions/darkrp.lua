@@ -83,3 +83,7 @@ end
 function PLAYLIB.darkrp.numberToCommand(number)
     return RPExtraTeams[number].command
 end
+
+function PLAYLIB.darkrp.teamStringToNumber(string)
+  return _G[string] or false
+end
