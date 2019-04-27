@@ -32,9 +32,11 @@ PLAYLIB.FS.Prioritize[PLAYLIB_FS_FILE] = {
     "config"
 }
 PLAYLIB.FS.Prioritize[PLAYLIB_FS_MODULE] = {
+    "libraries",
     "chat_commands",
     "logger",
     "play_derma",
+    
 }
 
 PLAYLIB.FS.Ignore = {}
@@ -75,6 +77,41 @@ function PLAYLIB.FS:Index(dir)
     for key,d in SortedPairs(dirs) do 
         self:Index(dir.."/"..d)
     end
+end
+
+function PLAYLIB.FS:SortPriorities(to_sort,sort_example)
+    local retval = {}
+
+    local function contains(tbl,str)
+        local found = {}
+        for _,entry in SortedPairs(tbl) do
+            entry = tostring(entry)
+            if string.find(entry,str) then
+                table.insert(found,entry)
+            end
+        end
+
+        if table.Count(found) <1 then
+            return found
+        else
+            return found[1]
+        end
+    end
+
+    for i=1,#sort_example do
+        local f = contains(to_sort,sort_example[i])
+        if f and !istable(f) then
+            table.insert(retval,f)
+            table.RemoveByValue(to_sort,f)
+        end
+            
+    end
+
+    for _,val in SortedPairs(to_sort) do
+		table.insert(retval,val)
+	end
+
+    return retval
 end
 
 function PLAYLIB.FS:Sort(typ,mod)
@@ -131,7 +168,12 @@ function PLAYLIB.FS:Sort(typ,mod)
         
     end
 
-    return p,n
+    if typ == PLAYLIB_FS_FILE then
+        return p,n
+    elseif typ == PLAYLIB_FS_MODULE then
+        return self:SortPriorities(p,self.Prioritize[typ]),n
+    end 
+    
 end
 
 function PLAYLIB.FS:LoadFile(mod,fl)

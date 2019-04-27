@@ -31,3 +31,33 @@ function PLAYLIB.table.removeByKey(t,key)
 end
 
 table.removeByKey = PLAYLIB.table.removeByKey
+
+function PLAYLIB.table.contains(tbl,str)
+	local found = {}
+	for _,entry in SortedPairs(tbl) do
+		entry = tostring(entry)
+		if string.find(entry,str) then
+			table.insert(found)
+		end
+	end
+
+	if table.Count(found) <1 then
+		return found
+	else
+		return found[1]
+	end
+end
+
+table.contains = PLAYLIB.table.contains
+
+function PLAYLIB.table.append(target,to_concat)
+	local retval = table.Copy(target)
+
+	for _,val in SortedPairs(to_concat) do
+		table.insert(retval,val)
+	end
+
+	return retval
+end
+
+table.append = PLAYLIB.table.append

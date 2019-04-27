@@ -13,6 +13,7 @@ PLAYLIB.logger.PrefixColor = Color(250,128,114)
 if SERVER then -- Serverside Code here
 	PLAYLIB.logger.newLogFileAfter = 3600*6 -- In Seconds
 	PLAYLIB.logger.debug = false
+	PLAYLIB.logger.decay = HOUR*6
     
 elseif CLIENT then -- Clientside Code here
 
