@@ -9,7 +9,9 @@ if SERVER then
 	util.AddNetworkString("PLAYLIB::MedicSysDeleteEntry")
 	util.AddNetworkString("PLAYLIB::MedicSysCreateEntry")
 
-	PLAYLIB.logger.addLogger("medic_sys")
+	PLAYLIB.Logger:Create("medic_sys")
+
+ 	PLAYLIB.medic_sys.log = function(text) PLAYLIB.Logger:Log("medic_sys",text) end
 	PLAYLIB.chatcommand.addCommand("!medic_admin",function(ply,cmd,text)
 		if PLAYLIB.medic_sys.viewRanks[ply:GetUserGroup()] then
 			PLAYLIB.medic_sys.openUI(ply)
@@ -30,7 +32,7 @@ if SERVER then
 			PLAYLIB.medic_sys.openUI(ply)
 		else
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] "..ply:Name().."("..ply:SteamID64()..") tried to delete Entry with ID: "..id.." but had no permissions to do so!\n")
-			PLAYLIB.logger.log("medic_sys",ply:Name().."("..ply:SteamID64()..") tried to delete Entry with ID: "..id.." but had no permissions to do so!")
+			self.log(ply:Name().."("..ply:SteamID64()..") tried to delete Entry with ID: "..id.." but had no permissions to do so!")
 			PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] You have no permissions to delete Entries!"})
 		end
 	end)
@@ -61,7 +63,7 @@ function PLAYLIB.medic_sys.openUI(ply)
 		net.Send(ply)
 	else
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] "..ply:Name().."("..ply:SteamID64()..") tried to access the Medic Panel without having permission!\n")
-		PLAYLIB.logger.log("medic_sys",ply:Name().."("..ply:SteamID64()..") tried to access the Medic Panel without having permission!\n")
+		self.log(ply:Name().."("..ply:SteamID64()..") tried to access the Medic Panel without having permission!\n")
 		PLAYLIB.misc.chatNotify(ply,{Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] You have no permissions to view the Entries!"})
 	end
 	
@@ -121,14 +123,14 @@ function PLAYLIB.medic_sys.InitializeDatabase()
 		);
 	]]
 	PLAYLIB.sql.query(false,queryString, function(res)
-		PLAYLIB.logger.log("medic_sys","Erstellen der Datenbank erfolgreich!") 
+		PLAYLIB.medic_sys.log("Erstellen der Datenbank erfolgreich!") 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Erstellen der Datenbank erfolgreich!\n")
 	end,
 	function(error) 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Beim erstellen des SQLite Tables ist ein Error aufgetreten!\n")
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Error: "..error.."\n")
-		PLAYLIB.logger.log("medic_sys","Beim erstellen des SQLite Tables ist ein Error aufgetreten!")
-		PLAYLIB.logger.log("medic_sys","Error: "..error)
+		PLAYLIB.medic_sys.log("Beim erstellen des SQLite Tables ist ein Error aufgetreten!")
+		PLAYLIB.medic_sys.log("Error: "..error)
 	end)
 end
 
@@ -152,8 +154,8 @@ function PLAYLIB.medic_sys.getMedicEntries()
 	function(error) 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Beim erfragen der Medic Einträge ist ein Error aufgetreten!\n")
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Error: "..error.."\n")
-		PLAYLIB.logger.log("medic_sys","Beim erfragen der Medic Einträge ist ein Error aufgetreten!")
-		PLAYLIB.logger.log("medic_sys","Error: "..error)
+		self.log("Beim erfragen der Medic Einträge ist ein Error aufgetreten!")
+		self.log("Error: "..error)
 	end)
 
 	return retval
@@ -177,13 +179,13 @@ function PLAYLIB.medic_sys.submitEntry(ply,target,message)
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] target_sid = "..target_sid.."\n")
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] create_date = "..create_date.."\n")
 		end
-		PLAYLIB.logger.log("medic_sys","Eintrag zur Akte von "..target_name.."("..target_sid..") von "..creator_name.."("..creator_sid..") hinzugefügt!")
-		PLAYLIB.logger.log("medic_sys","creator_name = "..creator_name)
-		PLAYLIB.logger.log("medic_sys","creator_sid = "..creator_sid)
-		PLAYLIB.logger.log("medic_sys","message = "..message)
-		PLAYLIB.logger.log("medic_sys","target_name = "..target_name)
-		PLAYLIB.logger.log("medic_sys","target_sid = "..target_sid)
-		PLAYLIB.logger.log("medic_sys","create_date = "..create_date)
+		self.log("Eintrag zur Akte von "..target_name.."("..target_sid..") von "..creator_name.."("..creator_sid..") hinzugefügt!")
+		self.log("creator_name = "..creator_name)
+		self.log("creator_sid = "..creator_sid)
+		self.log("message = "..message)
+		self.log("target_name = "..target_name)
+		self.log("target_sid = "..target_sid)
+		self.log("create_date = "..create_date)
 	end,
 	function(error) 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Beim erstellen eines Eintrag in "..target_name.."("..target_sid..") Akte von "..creator_name.."("..creator_sid..") ist ein Fehler aufgetreten!\n" )
@@ -196,14 +198,14 @@ function PLAYLIB.medic_sys.submitEntry(ply,target,message)
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] target_sid = "..target_sid.."\n")
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] create_date = "..create_date.."\n")
 		end
-		PLAYLIB.logger.log("medic_sys","Beim erstellen eines Eintrag in "..target_name.."("..target_sid..") Akte von "..creator_name.."("..creator_sid..") ist ein Fehler aufgetreten!")
-		PLAYLIB.logger.log("medic_sys","Error: "..error)
-		PLAYLIB.logger.log("medic_sys","creator_name = "..creator_name)
-		PLAYLIB.logger.log("medic_sys","creator_sid = "..creator_sid)
-		PLAYLIB.logger.log("medic_sys","message = "..message)
-		PLAYLIB.logger.log("medic_sys","target_name = "..target_name)
-		PLAYLIB.logger.log("medic_sys","target_sid = "..target_sid)
-		PLAYLIB.logger.log("medic_sys","create_date = "..create_date)
+		self.log("Beim erstellen eines Eintrag in "..target_name.."("..target_sid..") Akte von "..creator_name.."("..creator_sid..") ist ein Fehler aufgetreten!")
+		self.log("Error: "..error)
+		self.log("creator_name = "..creator_name)
+		self.log("creator_sid = "..creator_sid)
+		self.log("message = "..message)
+		self.log("target_name = "..target_name)
+		self.log("target_sid = "..target_sid)
+		self.log("create_date = "..create_date)
 		
 	end)
 
@@ -221,15 +223,15 @@ function PLAYLIB.medic_sys.deleteEntry(ply,id)
 		if PLAYLIB.medic_sys.debug then
 			MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Deleted Entry Information: "..entry_string.."\n")
 		end
-		PLAYLIB.logger.log("medic_sys",deleter_name.."("..deleter_sid..") Deleted Entry with ID: "..id.."!")
-		PLAYLIB.logger.log("medic_sys","Deleted Entry Information: "..entry_string)
+		self.log(deleter_name.."("..deleter_sid..") Deleted Entry with ID: "..id.."!")
+		self.log("Deleted Entry Information: "..entry_string)
 		retval = res
 	end,
 	function(error) 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Beim löschen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!\n")
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Error: "..error.."\n")
-		PLAYLIB.logger.log("medic_sys","Beim löschen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!\n")
-		PLAYLIB.logger.log("medic_sys","Error: "..error)
+		self.log("Beim löschen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!\n")
+		self.log("Error: "..error)
 	end)
 end
 
@@ -242,8 +244,8 @@ function PLAYLIB.medic_sys.getEntry(id)
 	function(error) 
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Beim erfragen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!\n")
 		MsgC(Color(255,255,255),"[",PLAYLIB.medic_sys.PrefixColor,PLAYLIB.medic_sys.Prefix,Color(255,255,255),"] [MEDIC SYS] Error: "..error.."\n")
-		PLAYLIB.logger.log("medic_sys","Beim erfragen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!")
-		PLAYLIB.logger.log("medic_sys","Error: "..error)
+		self.log("Beim erfragen des Eintrag mit der ID: "..id.." ist ein Fehler aufgetreten!")
+		self.log("Error: "..error)
 	end)
 
 	return retval
